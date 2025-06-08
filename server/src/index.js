@@ -24,6 +24,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../public')));
+}
+
 // Routes
 app.use('/api/health', require('./routes/health'));
 app.use('/api/requests', require('./routes/requests'));
@@ -34,8 +39,15 @@ app.use('/api/events', require('./routes/events'));
 // Import middleware
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
-// 404 handler for unknown routes
-app.use(notFoundHandler);
+// Serve React app for all non-API routes in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  });
+} else {
+  // 404 handler for unknown routes in development
+  app.use(notFoundHandler);
+}
 
 // Error handling middleware
 app.use(errorHandler);

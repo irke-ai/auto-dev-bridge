@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import SSEClient from '../utils/sse'
 
-const useSSE = (url = 'http://localhost:3001/api/events', options = {}) => {
+const useSSE = (url = null, options = {}) => {
+  const defaultUrl = import.meta.env.VITE_API_BASE_URL 
+    ? `${import.meta.env.VITE_API_BASE_URL}/events`
+    : '/api/events'
+  const sseUrl = url || defaultUrl
   const [connectionStatus, setConnectionStatus] = useState('disconnected')
   const [lastMessage, setLastMessage] = useState(null)
   const [error, setError] = useState(null)
@@ -17,7 +21,7 @@ const useSSE = (url = 'http://localhost:3001/api/events', options = {}) => {
       sseClientRef.current.disconnect()
     }
 
-    const sseClient = new SSEClient(url, {
+    const sseClient = new SSEClient(sseUrl, {
       reconnectInterval: 3000,
       maxReconnectAttempts: 10,
       ...options
@@ -69,7 +73,7 @@ const useSSE = (url = 'http://localhost:3001/api/events', options = {}) => {
 
     sseClientRef.current = sseClient
     sseClient.connect()
-  }, [url, options])
+  }, [sseUrl, options])
 
   const disconnect = useCallback(() => {
     if (sseClientRef.current) {

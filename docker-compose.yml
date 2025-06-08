@@ -28,24 +28,7 @@ services:
     networks:
       - auto-dev-network
 
-  # Development client (for testing)
-  auto-dev-client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    container_name: auto-dev-client
-    ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_BASE_URL=http://localhost:3001
-    volumes:
-      - ./client/src:/app/src
-      - ./client/public:/app/public
-    depends_on:
-      - auto-dev-bridge
-    restart: unless-stopped
-    networks:
-      - auto-dev-network
+  # Nginx serves the built client from auto-dev-bridge container
 
   # Nginx reverse proxy (optional)
   nginx:
@@ -57,7 +40,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - auto-dev-bridge
-      - auto-dev-client
     restart: unless-stopped
     networks:
       - auto-dev-network
