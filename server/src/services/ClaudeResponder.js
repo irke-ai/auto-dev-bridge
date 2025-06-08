@@ -1,12 +1,14 @@
 const EventEmitter = require('events')
 const fs = require('fs').promises
 const path = require('path')
+const CommandFileWriter = require('./CommandFileWriter')
 
 class ClaudeResponder extends EventEmitter {
   constructor(dataManager, sseManager) {
     super()
     this.dataManager = dataManager
     this.sseManager = sseManager
+    this.commandWriter = new CommandFileWriter()
     this.isRunning = false
     this.requestQueue = []
     this.processing = false
@@ -36,10 +38,13 @@ class ClaudeResponder extends EventEmitter {
 
     console.log(`New request queued for Claude: ${request.id}`)
     
-    // Save request to a special file for Claude to process
-    const claudeRequestsPath = path.join(process.env.DATA_PATH || '/app/data', 'claude_requests.json')
-    
     try {
+      // Write command file for AutoHotkey to process
+      await this.commandWriter.writeCommand(request.id, request.message)
+      
+      // Also save to tracking file
+      const claudeRequestsPath = path.join(process.env.DATA_PATH || '/app/data', 'claude_requests.json')
+      
       let claudeRequests = []
       try {
         const content = await fs.readFile(claudeRequestsPath, 'utf8')

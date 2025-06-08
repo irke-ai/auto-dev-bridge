@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import useSSE from '../hooks/useSSE'
+import React, { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react'
+import SSEClient from '../utils/sse'
 
 export const SSEContext = createContext(null)
 
@@ -14,17 +14,56 @@ export const useSSEContext = () => {
 export const SSEProvider = ({ children, url = 'http://localhost:3001/api/events' }) => {
   const [messages, setMessages] = useState([])
   const [notifications, setNotifications] = useState([])
+  const [sseStatus, setSSEStatus] = useState('disconnected')
+  const [lastEvent, setLastEvent] = useState(null)
+  const sseClientRef = useRef(null)
   
-  const {
-    connectionStatus,
-    isConnected,
-    lastMessage,
-    error,
-    connect,
-    disconnect,
-    addEventListener,
-    removeEventListener
-  } = useSSE(url)
+  useEffect(() => {
+    const client = new SSEClient(url)
+    sseClientRef.current = client
+    
+    // Set up event listeners
+    client.on('connect', () => {
+      setSSEStatus('connected')
+      console.log('SSE connected')
+    })
+    
+    client.on('disconnect', () => {
+      setSSEStatus('disconnected')
+      console.log('SSE disconnected')
+    })
+    
+    client.on('error', (error) => {
+      setSSEStatus('error')
+      console.error('SSE error:', error)
+    })
+    
+    client.on('reconnecting', ({ attempt }) => {
+      setSSEStatus('reconnecting')
+      console.log(`SSE reconnecting (attempt ${attempt})`)
+    })
+    
+    client.on('message', (data) => {
+      setLastEvent(data)
+      setMessages(prev => [data, ...prev.slice(0, 49)])
+    })
+    
+    // Connect
+    client.connect()
+    
+    // Cleanup
+    return () => {
+      client.disconnect()
+    }
+  }, [url])
+  
+  const addEventListener = useCallback((eventType, callback) => {
+    if (sseClientRef.current) {
+      sseClientRef.current.on(eventType, callback)
+      return () => sseClientRef.current.off(eventType, callback)
+    }
+    return () => {}
+  }, [])
 
   // Handle different message types
   useEffect(() => {
@@ -116,20 +155,15 @@ export const SSEProvider = ({ children, url = 'http://localhost:3001/api/events'
 
   const value = {
     // Connection state
-    connectionStatus,
-    isConnected,
-    error,
+    sseStatus,
+    lastEvent,
     
     // Messages and notifications
     messages,
     notifications,
-    lastMessage,
     
     // Actions
-    connect,
-    disconnect,
     addEventListener,
-    removeEventListener,
     clearNotifications,
     clearMessages
   }
