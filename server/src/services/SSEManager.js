@@ -79,6 +79,10 @@ class SSEManager extends EventEmitter {
     try {
       const sseData = this.formatSSEMessage(eventType, data)
       client.response.write(sseData)
+      // Ensure data is flushed immediately
+      if (client.response.flush) {
+        client.response.flush()
+      }
       return true
     } catch (error) {
       console.error(`Failed to send SSE message to ${clientId}:`, error)
