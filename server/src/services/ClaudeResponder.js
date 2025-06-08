@@ -34,13 +34,19 @@ class ClaudeResponder extends EventEmitter {
   }
 
   async addRequest(request) {
-    if (!this.isRunning) return
+    if (!this.isRunning) {
+      console.log('ClaudeResponder not running, skipping request')
+      return
+    }
 
-    console.log(`New request queued for Claude: ${request.id}`)
+    console.log(`[ClaudeResponder] New request queued for Claude: ${request.id}`)
+    console.log(`[ClaudeResponder] Request message: ${request.message}`)
     
     try {
       // Write command file for AutoHotkey to process
-      await this.commandWriter.writeCommand(request.id, request.message)
+      console.log('[ClaudeResponder] Writing command file...')
+      const filePath = await this.commandWriter.writeCommand(request.id, request.message)
+      console.log(`[ClaudeResponder] Command file written: ${filePath}`)
       
       // Also save to tracking file
       const claudeRequestsPath = path.join(process.env.DATA_PATH || '/app/data', 'claude_requests.json')

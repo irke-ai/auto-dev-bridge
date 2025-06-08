@@ -53,11 +53,19 @@ router.post('/',
     
     // Queue for Claude processing
     const claudeResponder = req.app.get('claudeResponder')
+    console.log('[requests route] ClaudeResponder available:', !!claudeResponder)
+    
     if (claudeResponder) {
+      console.log('[requests route] Adding request to Claude queue:', request.id)
       // Add to Claude's queue
-      setImmediate(() => {
-        claudeResponder.addRequest(request)
-      })
+      try {
+        await claudeResponder.addRequest(request)
+        console.log('[requests route] Request added to Claude queue successfully')
+      } catch (error) {
+        console.error('[requests route] Failed to add request to Claude queue:', error)
+      }
+    } else {
+      console.log('[requests route] ClaudeResponder not available')
     }
     
     res.status(201).json({

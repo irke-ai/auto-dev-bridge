@@ -44,7 +44,7 @@ export default function ClaudeBridge() {
         },
         body: JSON.stringify({
           message: command,
-          priority: 'normal',
+          priority: 'medium',
           metadata: {
             source: 'claude-bridge'
           }
