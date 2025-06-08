@@ -4,7 +4,13 @@
 
 ## 🚀 프로젝트 개요
 
-AUTO-DEV Bridge는 웹 인터페이스와 Claude Code 간의 효율적인 비동기 통신을 가능하게 하는 시스템입니다. JSON 파일 기반의 데이터 교환과 Server-Sent Events를 통한 실시간 알림을 제공합니다.
+AUTO-DEV Bridge는 웹 인터페이스와 VSCode의 Claude Code 간의 효율적인 비동기 통신을 가능하게 하는 시스템입니다. JSON 파일 기반의 데이터 교환과 Server-Sent Events를 통한 실시간 알림을 제공합니다.
+
+### 주요 기능
+- 웹 UI에서 VSCode Claude Code로 명령 전송
+- AutoHotkey v2를 통한 자동 입력
+- 실시간 응답 모니터링 (개발 중)
+- 명령 히스토리 관리
 
 ## 🏗️ 아키텍처
 
