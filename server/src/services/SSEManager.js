@@ -5,7 +5,7 @@ class SSEManager extends EventEmitter {
     super()
     this.clients = new Map()
     this.messageQueue = new Map()
-    this.heartbeatInterval = 30000 // 30 seconds
+    this.heartbeatInterval = 5000 // 5 seconds for debugging
     this.heartbeatTimer = null
     
     this.setupHeartbeat()
@@ -35,12 +35,14 @@ class SSEManager extends EventEmitter {
 
     console.log(`SSE client connected: ${clientId}`)
     
-    // Send initial connection message
-    this.sendToClient(clientId, 'connected', {
-      message: 'Connected to AUTO-DEV Bridge',
-      timestamp: new Date().toISOString(),
-      clientId
-    })
+    // Send initial connection message after a short delay
+    setTimeout(() => {
+      this.sendToClient(clientId, 'connected', {
+        message: 'Connected to AUTO-DEV Bridge',
+        timestamp: new Date().toISOString(),
+        clientId
+      })
+    }, 100)
 
     // Send any queued messages
     this.sendQueuedMessages(clientId)

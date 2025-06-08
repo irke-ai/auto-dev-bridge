@@ -42,13 +42,43 @@ class SSEClient {
 
       this.eventSource.onerror = (event) => {
         console.error('SSE connection error:', event)
+        console.error('EventSource readyState:', this.eventSource.readyState)
+        console.error('EventSource URL:', this.eventSource.url)
+        
+        // Log more details about the error
+        if (event.target) {
+          console.error('Error target readyState:', event.target.readyState)
+        }
+        
         this.isConnected = false
         this.emit('error', event)
         
-        if (this.shouldReconnect && this.reconnectAttempts < this.options.maxReconnectAttempts) {
+        // Only reconnect if not manually disconnected
+        if (this.eventSource.readyState === EventSource.CLOSED && 
+            this.shouldReconnect && 
+            this.reconnectAttempts < this.options.maxReconnectAttempts) {
           this.scheduleReconnect()
         }
       }
+
+      // Add event listener for custom events
+      this.eventSource.addEventListener('connected', (event) => {
+        try {
+          const data = JSON.parse(event.data)
+          this.emit('message', { ...data, eventType: 'connected' })
+        } catch (error) {
+          console.error('Failed to parse connected event:', error)
+        }
+      })
+
+      this.eventSource.addEventListener('heartbeat', (event) => {
+        try {
+          const data = JSON.parse(event.data)
+          this.emit('message', { ...data, eventType: 'heartbeat' })
+        } catch (error) {
+          console.error('Failed to parse heartbeat event:', error)
+        }
+      })
 
       // Custom event listeners
       this.listeners.forEach((callback, eventType) => {
