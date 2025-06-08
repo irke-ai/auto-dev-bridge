@@ -17,11 +17,14 @@ class SSEManager extends EventEmitter {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
       'Access-Control-Allow-Headers': 'Cache-Control',
       'Access-Control-Allow-Methods': 'GET, OPTIONS'
     })
 
+    // Send initial SSE comment to establish connection
+    res.write(':ok\n\n')
+    
     // Store client connection
     this.clients.set(clientId, {
       id: clientId,
