@@ -72,6 +72,30 @@ export const SSEProvider = ({ children, url = 'http://localhost:3001/api/events'
       console.log('Heartbeat received:', data.connectedClients, 'clients')
     }))
 
+    // Handle response created
+    cleanup.push(addEventListener('response_created', (data) => {
+      console.log('Response created:', data)
+      setNotifications(prev => [{
+        id: Date.now(),
+        type: 'response_created',
+        message: 'New response received',
+        data,
+        timestamp: new Date()
+      }, ...prev.slice(0, 9)])
+    }))
+
+    // Handle Claude pending requests
+    cleanup.push(addEventListener('claude_pending_requests', (data) => {
+      console.log('Claude pending requests:', data)
+      setNotifications(prev => [{
+        id: Date.now(),
+        type: 'claude_pending',
+        message: data.notification,
+        data,
+        timestamp: new Date()
+      }, ...prev.slice(0, 9)])
+    }))
+
     // Handle generic messages
     cleanup.push(addEventListener('*', (message) => {
       setMessages(prev => [message, ...prev.slice(0, 49)]) // Keep only 50 messages

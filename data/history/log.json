@@ -1,0 +1,150 @@
+{
+  "entries": [
+    {
+      "id": "43c270be-56db-4bf2-8e1f-59760153e9a0",
+      "type": "request_created",
+      "data": {
+        "id": "b595c144-0a18-43eb-8084-0a672a09a6b8",
+        "message": "auto-dev-bridge를 깃 커밋 푸시 해줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T04:22:19.825Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T04:22:19.835Z"
+    },
+    {
+      "id": "1953373f-ea0d-4768-997b-c316094f0f4d",
+      "type": "request_created",
+      "data": {
+        "id": "e5195675-196f-47cb-9cfb-33673774cfe8",
+        "message": "이전 요청을 수행해줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T04:13:34.145Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T04:13:34.157Z"
+    },
+    {
+      "id": "102ec1e4-8294-4f0f-86a9-ce56039c556a",
+      "type": "request_created",
+      "data": {
+        "id": "03a46cb1-79d1-4961-b6fb-e55d20de845a",
+        "message": "auto-dev-bridge를 깃 커밋 푸시 후 결과를 알려줘",
+        "priority": "medium",
+        "timestamp": "2025-06-08T04:09:46.524Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T04:09:46.535Z"
+    },
+    {
+      "id": "16402413-ed9f-4936-b999-221fdcae0f0d",
+      "type": "request_updated",
+      "data": {
+        "id": "0d3ea64d-3a16-40df-8d46-0305e05a40e3",
+        "message": "현재 프로젝트 진행 상황을 요약해서 보고해줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T02:47:16.193Z",
+        "status": "completed",
+        "updated_at": "2025-06-08T02:50:40.311Z"
+      },
+      "timestamp": "2025-06-08T02:50:40.321Z"
+    },
+    {
+      "id": "7329585a-552c-4d68-a7c9-bf4000901bfe",
+      "type": "response_created",
+      "data": {
+        "id": "0ab2c98e-e812-4676-96d8-5075587623a7",
+        "request_id": "0d3ea64d-3a16-40df-8d46-0305e05a40e3",
+        "content": {
+          "message": "🚀 AUTO-DEV Bridge 프로젝트 진행 상황 보고\n\n✅ 완료된 작업:\n1. **기본 아키텍처 구축** - Express 서버 + React 클라이언트\n2. **SSE 실시간 통신** - 양방향 통신 구현 및 안정화\n3. **데이터 영속성** - 요청/응답을 로컬 파일시스템에 저장\n4. **Docker 컨테이너화** - 프로덕션 환경 구축\n5. **자동 응답 시스템** - Claude Code 직접 연동\n\n📊 현재 상태:\n- 서버: 정상 작동 중 (포트 3001)\n- 총 요청: 5개 (처리됨: 1개, 대기중: 4개)\n- 저장 위치: /mnt/c/DEV/projects/auto-dev-bridge/data/\n\n🔧 최근 개선사항:\n- SSE 연결 안정성 향상\n- 로컬 데이터 저장 경로 수정\n- Claude Code 직접 응답 시스템 구축\n\n📌 다음 단계 제안:\n- 웹 UI 개선 (요청/응답 필터링)\n- 응답 자동 새로고침 기능\n- 요청 우선순위 처리 로직\n\nAUTO-DEV Bridge가 성공적으로 작동 중입니다! 🎉",
+          "type": "project_status",
+          "generated_by": "Claude Code",
+          "timestamp": "2025-06-08T02:49:30.000Z"
+        },
+        "status": "success",
+        "timestamp": "2025-06-08T02:50:26.870Z"
+      },
+      "timestamp": "2025-06-08T02:50:26.880Z"
+    },
+    {
+      "id": "51531769-ae8d-47c5-a908-960ddf95eda9",
+      "type": "request_created",
+      "data": {
+        "id": "0d3ea64d-3a16-40df-8d46-0305e05a40e3",
+        "message": "현재 프로젝트 진행 상황을 요약해서 보고해줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T02:47:16.193Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T02:47:16.206Z"
+    },
+    {
+      "id": "ea77ab8e-74c8-4e7e-9da1-2ec698762967",
+      "type": "request_created",
+      "data": {
+        "id": "f8cd52af-b6bd-4fff-908a-c647219c3cb3",
+        "message": "현재 프로젝트 진행상황을 보고해줘",
+        "priority": "medium",
+        "timestamp": "2025-06-08T02:42:23.485Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T02:42:23.498Z"
+    },
+    {
+      "id": "7c0f6ef3-f41b-46ac-9135-4179a4724510",
+      "type": "request_created",
+      "data": {
+        "id": "2e028ff7-017a-4a27-b304-2479eff48b6c",
+        "message": "안녕? 너도 인사해줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T02:38:56.355Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T02:38:56.368Z"
+    },
+    {
+      "id": "f7a9752f-e083-4448-a3e7-23bfe389500d",
+      "type": "response_created",
+      "data": {
+        "id": "bf868c1c-b785-4187-bd7e-533ca51f5f7e",
+        "request_id": "b35f43e2-a884-48bd-b7a7-97a5408c908b",
+        "content": {
+          "message": "안녕하세요! AUTO-DEV Bridge입니다. 반갑습니다!",
+          "type": "greeting"
+        },
+        "status": "success",
+        "timestamp": "2025-06-08T02:36:13.507Z"
+      },
+      "timestamp": "2025-06-08T02:36:13.515Z"
+    },
+    {
+      "id": "7291317b-84df-490c-a634-1ed982e65056",
+      "type": "request_created",
+      "data": {
+        "id": "b35f43e2-a884-48bd-b7a7-97a5408c908b",
+        "message": "새로운 요청이야. 안녕?\n너도 인사를 응답으로 보내줘.",
+        "priority": "medium",
+        "timestamp": "2025-06-08T02:32:32.394Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T02:32:32.402Z"
+    },
+    {
+      "id": "dc5eca9a-badb-412f-99a3-71cc2498c102",
+      "type": "request_created",
+      "data": {
+        "id": "93809953-3c59-42ae-bee8-28343e45f9dd",
+        "message": "프로젝트 폴더 저장 테스트",
+        "priority": "high",
+        "timestamp": "2025-06-08T02:31:48.396Z",
+        "status": "pending"
+      },
+      "timestamp": "2025-06-08T02:31:48.407Z"
+    }
+  ],
+  "metadata": {
+    "created": "2025-06-08T02:31:48.407Z",
+    "version": "1.0.0",
+    "last_updated": "2025-06-08T04:22:19.835Z"
+  }
+}

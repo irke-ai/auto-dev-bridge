@@ -51,6 +51,15 @@ router.post('/',
     // Add to history
     await dataManager.addToHistory('request_created', request)
     
+    // Queue for Claude processing
+    const claudeResponder = req.app.get('claudeResponder')
+    if (claudeResponder) {
+      // Add to Claude's queue
+      setImmediate(() => {
+        claudeResponder.addRequest(request)
+      })
+    }
+    
     res.status(201).json({
       message: 'Request created successfully',
       request

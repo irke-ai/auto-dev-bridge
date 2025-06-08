@@ -3,7 +3,7 @@ const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 
 class DataManager {
-  constructor(dataPath = path.join(process.cwd(), 'data')) {
+  constructor(dataPath = process.env.DATA_PATH || path.join(process.cwd(), 'data')) {
     this.dataPath = dataPath
   }
 

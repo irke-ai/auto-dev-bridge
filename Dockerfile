@@ -55,6 +55,8 @@ USER autodev
 ENV NODE_ENV=production
 ENV PORT=3001
 ENV CORS_ORIGIN=http://localhost:5173
+ENV DATA_PATH=/app/data
+# API key will be passed at runtime
 
 # Expose port
 EXPOSE 3001

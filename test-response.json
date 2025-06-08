@@ -1,0 +1,8 @@
+{
+  "request_id": "b35f43e2-a884-48bd-b7a7-97a5408c908b",
+  "content": {
+    "message": "안녕하세요! AUTO-DEV Bridge입니다. 반갑습니다!",
+    "type": "greeting"
+  },
+  "status": "success"
+}

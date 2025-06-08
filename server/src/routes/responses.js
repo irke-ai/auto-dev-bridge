@@ -51,6 +51,12 @@ router.post('/',
     // Add to history
     await dataManager.addToHistory('response_created', response)
     
+    // Broadcast response to all SSE clients
+    const sseManager = req.app.get('sseManager')
+    if (sseManager) {
+      sseManager.broadcast('response_created', response)
+    }
+    
     res.status(201).json({
       message: 'Response created successfully',
       response

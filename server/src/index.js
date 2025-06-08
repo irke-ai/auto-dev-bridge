@@ -6,12 +6,26 @@ require('dotenv').config();
 // Initialize services
 const DataManager = require('./services/DataManager');
 const FileWatcher = require('./services/FileWatcher');
+const SSEManager = require('./services/SSEManager');
+const ClaudeResponder = require('./services/ClaudeResponder');
+const ClaudeFileWatcher = require('./services/ClaudeFileWatcher');
+const AnthropicResponder = require('./services/AnthropicResponder');
 
 const dataManager = new DataManager();
+const sseManager = new SSEManager();
 const fileWatcher = new FileWatcher([
   path.join(process.cwd(), 'data/requests'),
   path.join(process.cwd(), 'data/responses')
 ]);
+const claudeResponder = new ClaudeResponder(dataManager, sseManager);
+const claudeFileWatcher = new ClaudeFileWatcher(
+  path.join(process.env.DATA_PATH || '/app/data', 'claude_requests.json')
+);
+const anthropicResponder = new AnthropicResponder(
+  dataManager, 
+  sseManager, 
+  process.env.ANTHROPIC_API_KEY
+);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -53,9 +67,9 @@ if (process.env.NODE_ENV === 'production') {
 app.use(errorHandler);
 
 
-// Start file watcher and connect to SSE
-const eventsRouter = require('./routes/events');
-const sseManager = eventsRouter.sseManager;
+// Make services available to routes
+app.set('sseManager', sseManager);
+app.set('claudeResponder', claudeResponder);
 
 // Connect file watcher to SSE
 fileWatcher.on('sse_event', (event) => {
@@ -70,10 +84,42 @@ fileWatcher.on('error', (error) => {
 // Start file watcher
 fileWatcher.start();
 
+// Start claude responder
+claudeResponder.start();
+
+// Start claude file watcher
+claudeFileWatcher.start();
+
+// Start Anthropic API responder if API key is available
+if (process.env.ANTHROPIC_API_KEY) {
+  anthropicResponder.start();
+} else {
+  console.log('[AnthropicResponder] No API key found, automatic responses disabled');
+}
+
+// Handle pending requests from Claude file watcher
+claudeFileWatcher.on('pending_requests', (pendingRequests) => {
+  console.log(`\n🔔 [AUTO-DEV BRIDGE] ${pendingRequests.length} new requests detected!`);
+  
+  // Broadcast to all SSE clients
+  sseManager.broadcast('claude_pending_requests', {
+    count: pendingRequests.length,
+    requests: pendingRequests.map(req => ({
+      id: req.request.id,
+      message: req.request.message,
+      timestamp: req.request.timestamp
+    })),
+    notification: `⚡ Claude Code: ${pendingRequests.length} 요청이 대기 중입니다!`
+  });
+});
+
 // Graceful shutdown
 process.on('SIGINT', () => {
   console.log('Shutting down gracefully...');
   fileWatcher.stop();
+  claudeResponder.stop();
+  claudeFileWatcher.stop();
+  anthropicResponder.stop();
   sseManager.shutdown();
   process.exit(0);
 });
@@ -81,6 +127,9 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   console.log('Shutting down gracefully...');
   fileWatcher.stop();
+  claudeResponder.stop();
+  claudeFileWatcher.stop();
+  anthropicResponder.stop();
   sseManager.shutdown();
   process.exit(0);
 });
