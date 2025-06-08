@@ -1,6 +1,0 @@
-{
-  "commandId": "cmd_1749380007603",
-  "timestamp": "2025-06-08T19:53:35.000Z",
-  "response": "테스트 완료! AUTO-DEV Bridge 시스템이 안정적으로 작동하고 있습니다. 웹 인터페이스 → 파일 생성 → AutoHotkey → VSCode Claude Code → 응답 파일 → 웹 표시의 전체 플로우가 정상 작동합니다.",
-  "status": "success"
-}

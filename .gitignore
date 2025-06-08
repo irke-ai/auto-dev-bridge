@@ -65,3 +65,39 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+ENV/
+
+# Data directories (but keep structure)
+data/claude_commands/
+data/claude_responses/
+data/history/*.json
+data/requests/*.json
+data/responses/*.json
+server/data/history/*.json
+server/data/requests/*.json
+
+# Keep only sample/empty files
+!data/history/.gitkeep
+!data/requests/.gitkeep
+!data/responses/.gitkeep
+!server/data/history/.gitkeep
+!server/data/requests/.gitkeep
+
+# AutoHotkey logs
+*.ahk.log
+
+# Test files
+test_*.ahk
+*_test.ahk
+test-*.json
+
+# Debug/development files
+*_debug.*
+*_dev.*
