@@ -73,7 +73,7 @@ const useSSE = (url = null, options = {}) => {
 
     sseClientRef.current = sseClient
     sseClient.connect()
-  }, [sseUrl, options])
+  }, [sseUrl])
 
   const disconnect = useCallback(() => {
     if (sseClientRef.current) {
@@ -107,7 +107,7 @@ const useSSE = (url = null, options = {}) => {
       }
       disconnect()
     }
-  }, [connect, disconnect])
+  }, [])
 
   // Handle window focus/blur for connection management
   useEffect(() => {
