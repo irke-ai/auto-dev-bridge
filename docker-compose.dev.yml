@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  auto-dev-bridge-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: auto-dev-bridge-dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - CORS_ORIGIN=http://localhost:5173
+    volumes:
+      # Mount source code for hot reload
+      - ./server/src:/app/server/src
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - auto-dev-network
+
+  auto-dev-client-dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: auto-dev-client-dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:3001
+    volumes:
+      # Mount source code for hot reload
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+      - ./client/index.html:/app/index.html
+      - ./client/vite.config.js:/app/vite.config.js
+      - ./client/tailwind.config.js:/app/tailwind.config.js
+      - ./client/postcss.config.js:/app/postcss.config.js
+    depends_on:
+      - auto-dev-bridge-dev
+    restart: unless-stopped
+    networks:
+      - auto-dev-network
+
+networks:
+  auto-dev-network:
+    driver: bridge

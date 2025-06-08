@@ -1,0 +1,47 @@
+{
+  "name": "auto-dev-bridge",
+  "version": "1.0.0",
+  "description": "Web interface for async communication between web UI and Claude Code via JSON files and Git",
+  "main": "index.js",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "npm run build:client",
+    "build:client": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "test": "npm run test:server && npm run test:client",
+    "test:server": "cd server && npm test",
+    "test:client": "cd client && npm test",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:logs": "docker-compose logs -f",
+    "docker:test": "./docker-test.sh",
+    "docker:validate": "./docker-validate.sh",
+    "sandbox:test": "./sandbox-test.sh",
+    "clean": "rm -rf node_modules server/node_modules client/node_modules client/dist"
+  },
+  "keywords": ["bridge", "claude-code", "react", "express", "sse", "docker"],
+  "author": "AUTO-DEV System",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irke-ai/auto-dev-bridge.git"
+  }
+}
