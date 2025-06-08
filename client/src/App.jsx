@@ -1,8 +1,9 @@
 import React from 'react'
 import { SSEProvider } from './context/SSEContext.jsx'
-import RequestForm from './components/RequestForm'
 import ResponseDisplay from './components/ResponseDisplay'
 import StatusIndicator from './components/StatusIndicator'
+import ClaudeBridge from './components/ClaudeBridge'
+import CommandHistory from './components/CommandHistory'
 
 function App() {
   return (
@@ -19,14 +20,9 @@ function App() {
             <StatusIndicator />
           </header>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <RequestForm />
-            </div>
-            
-            <div className="space-y-6">
-              <ResponseDisplay />
-            </div>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <ClaudeBridge />
+            <CommandHistory />
           </div>
         </div>
       </div>

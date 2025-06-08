@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import useSSE from '../hooks/useSSE'
 
-const SSEContext = createContext(null)
+export const SSEContext = createContext(null)
 
 export const useSSEContext = () => {
   const context = useContext(SSEContext)

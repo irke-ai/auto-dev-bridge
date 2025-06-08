@@ -49,6 +49,8 @@ app.use('/api/requests', require('./routes/requests'));
 app.use('/api/responses', require('./routes/responses'));
 app.use('/api/history', require('./routes/history'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/claude-bridge', require('./routes/claude-bridge'));
+app.use('/api/claude-history', require('./routes/claude-history'));
 
 // Import middleware
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
