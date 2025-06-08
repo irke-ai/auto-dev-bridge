@@ -37,17 +37,13 @@ export default function ClaudeBridge() {
 
     setIsLoading(true)
     try {
-      const response = await fetch('http://localhost:3001/api/requests', {
+      const response = await fetch('http://localhost:3001/api/claude-bridge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: command,
-          priority: 'medium',
-          metadata: {
-            source: 'claude-bridge'
-          }
+          message: command
         })
       })
 
@@ -58,7 +54,7 @@ export default function ClaudeBridge() {
         
         // Add to responses
         setResponses(prev => [{
-          id: data.request.id,
+          id: data.commandId,
           command: command,
           status: 'pending',
           timestamp: new Date().toISOString()

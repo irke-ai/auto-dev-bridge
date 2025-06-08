@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Claude Bridge Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        input, button { padding: 10px; margin: 5px 0; }
+        input { width: 100%; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        #result { margin-top: 20px; padding: 10px; background: #f0f0f0; min-height: 100px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claude Bridge Test</h1>
+        <input type="text" id="message" placeholder="Enter your message" value="Hello from test page!">
+        <button onclick="sendCommand()">Send Command</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function sendCommand() {
+            const message = document.getElementById('message').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!message.trim()) {
+                resultDiv.innerHTML = '<span class="error">Please enter a message</span>';
+                return;
+            }
+            
+            resultDiv.innerHTML = 'Sending...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/claude-bridge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <span class="success">Success!</span><br>
+                        Command ID: ${data.commandId}<br>
+                        File Name: ${data.fileName}<br>
+                        Message: ${data.message}
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<span class="error">Error: ${data.message || 'Unknown error'}</span>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">Network Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Allow Enter key to send
+        document.getElementById('message').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendCommand();
+            }
+        });
+    </script>
+</body>
+</html>
